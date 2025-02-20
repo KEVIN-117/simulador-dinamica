@@ -4,5 +4,6 @@ module.exports = {
     "plugin:astro/recommended",
     "plugin:react/recommended",
     "prettier",
+    "plugin:storybook/recommended"
   ],
 };
