@@ -1,5 +1,5 @@
 ---
-import HomePage from '../components/HomePage.astro';
+import MainBoard from '../core/editor/organisms/main-board/main-board';
 import Layout from '../layouts/Layout.astro';
 
 // HomePage to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
@@ -7,5 +7,5 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
-  <HomePage />
+  <MainBoard client:only/>
 </Layout>

@@ -1,0 +1,52 @@
+const getWrapperHead = (title: string, model: string) => {
+    return `
+    <!DOCTYPE html>
+        <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <base target="_top">
+            <title>${title}</title>
+            <!-- stylesheets -->
+            <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+            <link rel="stylesheet" href="./fonts/Insolent/stylesheet.css" type="text/css">
+            <link rel="stylesheet" href="./fonts/BorisBlackBloxx/stylesheet.css" type="text/css">
+            <link rel="stylesheet" href="./style.css" type="text/css">
+
+            <!-- Tangle -->
+            <script type="text/javascript" src="./lib/TangleKit/Tangle.js"></script>
+
+            <!-- TangleKit -->
+            <link rel="stylesheet" href="./lib/TangleKit/TangleKit.css" type="text/css">
+            <script type="text/javascript" src="./lib/TangleKit/mootools.js"></script>
+            <script type="text/javascript" src="./lib/TangleKit/sprintf.js"></script>
+            <script type="text/javascript" src="./lib/TangleKit/BVTouchable.js"></script>
+            <script type="text/javascript" src="./lib/TangleKit/TangleKit.js"></script>
+            ${getWrapperTangle(model)}
+        </head>
+    `;
+}
+
+const getWrapperTangle = (model: string) => {
+    return `
+    	<script type="text/javascript">
+
+		function setUpTangle () {
+
+			var element = document.getElementById("example");
+
+			var tangle = new Tangle(element, ${model});
+		}
+
+	</script>
+    `
+}
+
+const getWrapperBody = (bodyHtml: string) => {
+    return `
+        <body onload="setUpTangle();">
+        ${bodyHtml}
+    </body>
+    `
+}
+
+export  { getWrapperHead, getWrapperBody };

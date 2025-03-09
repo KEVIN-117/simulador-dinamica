@@ -2,7 +2,7 @@ import React from 'react';
 import type { HeaderProps } from './top-bar.types';
 import styles from './top-bar.module.scss';
 
-const header = (props: HeaderProps) => {
+const Header = (props: HeaderProps) => {
   const { onLogin, onCreateAccount, onLogout, user } = props;
   return (
     <div className={styles.header}>
@@ -10,4 +10,4 @@ const header = (props: HeaderProps) => {
     </div>
   );
 };
-export default header;
+export default Header;
