@@ -1,9 +1,12 @@
+@use '../../../../styles/ads-global' as ads;
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    height: 60px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    height: 50px;
+    color: ads.$ads-color-white;
+    background-color: ads.$ads-color-primary-bg;
+    box-shadow: ads.$ads-color-box-shadow;
 }

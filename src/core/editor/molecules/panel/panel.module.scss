@@ -1,0 +1,14 @@
+@use '../../../../styles/ads-global' as ads;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: var(--panel-width, 100%);
+    color: #fff;
+    background-color: ads.$ads-color-primary-bg;;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 10px;
+}
