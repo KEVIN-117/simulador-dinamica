@@ -1,4 +1,4 @@
-const getWrapperHead = (title: string, model: string) => {
+const getWrapperHead = (title: string, model: string, options: string) => {
     return `
     <!DOCTYPE html>
         <html>
@@ -11,7 +11,8 @@ const getWrapperHead = (title: string, model: string) => {
             <link rel="stylesheet" href="./fonts/Insolent/stylesheet.css" type="text/css">
             <link rel="stylesheet" href="./fonts/BorisBlackBloxx/stylesheet.css" type="text/css">
             <link rel="stylesheet" href="./style.css" type="text/css">
-
+            <!-- third party libraries -->
+            <script src="https://cdn.plot.ly/plotly-3.0.0.min.js" charset="utf-8"></script>
             <!-- Tangle -->
             <script type="text/javascript" src="./lib/TangleKit/Tangle.js"></script>
 
@@ -21,15 +22,15 @@ const getWrapperHead = (title: string, model: string) => {
             <script type="text/javascript" src="./lib/TangleKit/sprintf.js"></script>
             <script type="text/javascript" src="./lib/TangleKit/BVTouchable.js"></script>
             <script type="text/javascript" src="./lib/TangleKit/TangleKit.js"></script>
-            ${getWrapperTangle(model)}
+            ${getWrapperTangle(model, options)}
         </head>
     `;
 }
 
-const getWrapperTangle = (model: string) => {
+const getWrapperTangle = (model: string, options: string = '') => {
     return `
     	<script type="text/javascript">
-
+        ${options}
 		function setUpTangle () {
 
 			var element = document.getElementById("example");

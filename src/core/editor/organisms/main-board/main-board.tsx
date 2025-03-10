@@ -5,30 +5,56 @@ import Editor from '@monaco-editor/react';
 import WrapperFlow from '../../molecules/wrapper-flow/wrapper-flow';
 import Header from '../../atoms/top-bar/top-bar';
 const mockedCode = `
+
 const model = {
-    initialize: function() {
-        this.cookies = 4;
-		this.caloriesPerCookie = 50;
-    },
-    update: function() {
-        this.calories = this.cookies * this.caloriesPerCookie;
-    }
+  initialize: function () {
+      this.x0 = 0;
+      this.finalTime = 100;
+      this.dt = 1;
+      this.k = 0.034;
+      this.xd = 40;
+      this.initTime = 0;
+      Plotly.newPlot(negative, [], {title: 'Negative', margin: {t: 30}})
+  }, 
+  update: function () {
+      this.x = this.x0;
+      this.time = this.initTime = 0;
+      const xData = [];
+      const timeData = [];
+      for (this.time = this.initTime; this.time < this.finalTime; this.time += this.dt) {
+          this.x += ((this.xd - this.x) * this.k ) * this.dt;
+          xData.push(this.x);
+          timeData.push(this.time);
+      }
+      const data = [
+          {
+              x: timeData,
+              y: xData,
+              mode: 'lines',
+              type: 'scatter'
+          }
+      ]
+      console.log(data);
+      Plotly.react(negative, data, {title: "negative"});
+  }
 }
+
 `;
 const mockedHtml = `
-	<p>This is a simple reactive document.</p>
-
-	<p id="example">
-		When you eat <span data-var="cookies" class="TKAdjustableNumber" data-min="2" data-max="100"> cookies</span>, you
-		will consume <span data-var="calories"></span> calories.
-	</p>
+<p>This is a simple reactive document.</p>
+<p id="example">
+  Final Time <span data-var="finalTime" class="TKAdjustableNumber" data-min="2" data-max="300"> cookies</span>, you
+  will consume <span data-var="calories"></span> calories.
+</p>
+<div id='negative' class='plotly' data-plotly='data'></div>
 
 `;
 const MainBoard = () => {
   const [code, setCode] = useState(mockedCode);
+  const [play, setPlay] = useState(false);
   const [htmlCode, setHtmlCode] = useState(mockedHtml);
   const draggableRef = useRef<HTMLHRElement>(null);
-  const [leftPorcent, setPorcent] = useState(30);
+  const [leftPorcent, setPorcent] = useState(50);
   const mouseDown = useRef(false);
   const [isMouseMove, setMouseMove] = useState(false);
   useEffect(() => {
@@ -62,10 +88,13 @@ const MainBoard = () => {
       draggableRef.current?.removeEventListener('mouseup', () => {});
     };
   }, []);
-
+  const handlerPlay = (isPlay: boolean) => {
+    console.log('is play ', isPlay);
+    setPlay(isPlay);
+  };
   return (
     <div>
-      <Header />
+      <Header play={handlerPlay} />
       <div className={styles.container}>
         <Panel width={`${leftPorcent}%`}>
           <Editor
@@ -86,7 +115,8 @@ const MainBoard = () => {
         </Panel>
         <hr ref={draggableRef} className={styles.draggable} />
         <Panel width={`${100 - leftPorcent}%`}>
-          <WrapperFlow model={code} html={htmlCode} />
+          {isMouseMove && <div className={styles.overlay}></div>}
+          <WrapperFlow model={code} html={htmlCode} isPlay={play} />
         </Panel>
       </div>
     </div>

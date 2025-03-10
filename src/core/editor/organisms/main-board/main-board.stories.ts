@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import MainBoard from  './main-board';
-import React from 'react';
 
 const meta = {
     title: 'editor/organsims/MainBoard',

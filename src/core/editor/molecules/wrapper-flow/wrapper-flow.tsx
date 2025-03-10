@@ -2,16 +2,19 @@ import { useEffect, useRef } from 'react';
 import { getWrapperHead, getWrapperBody } from '../wrapper-flow/utils/html';
 import React from 'react';
 import { getBaseCodeBlock } from './utils/parsecode';
+import { initPlotly } from './utils/parsecode';
 
 interface WrapperFlowProps {
   model: string;
   html: string;
+  isPlay: boolean;
 }
 
 const WrapperFlow: React.FC<WrapperFlowProps> = (props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const { model, html } = props;
+  const { model, html, isPlay } = props;
   const baseCode = getBaseCodeBlock(model);
+  const plotlyObjects = initPlotly(html);
   useEffect(() => {
     const iframe = iframeRef.current;
     if (iframe) {
@@ -19,7 +22,7 @@ const WrapperFlow: React.FC<WrapperFlowProps> = (props) => {
       if (iframeDocument) {
         iframeDocument.open();
         iframeDocument.write(`
-          ${getWrapperHead('Dinamica de sistemas', baseCode)}
+          ${getWrapperHead('Dinamica de sistemas', baseCode, 'options')}
           ${getWrapperBody(html)}
           `);
         const iframeBody = iframeDocument.body;
@@ -32,13 +35,13 @@ const WrapperFlow: React.FC<WrapperFlowProps> = (props) => {
         iframeDocument.close();
       }
     }
-  }, [baseCode, html]);
+  }, [isPlay]);
   return (
     <iframe
       ref={iframeRef}
       style={{
         width: '100%',
-        height: '100%',
+        height: `100vh`,
         overflow: 'visible',
         border: 'none',
         clip: 'auto',
