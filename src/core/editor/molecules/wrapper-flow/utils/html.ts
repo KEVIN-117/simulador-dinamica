@@ -1,3 +1,5 @@
+import { detectBlockIndices } from './parsecode';
+
 const getWrapperHead = (title: string, model: string, options: string) => {
     return `
     <!DOCTYPE html>
@@ -28,6 +30,8 @@ const getWrapperHead = (title: string, model: string, options: string) => {
 }
 
 const getWrapperTangle = (model: string, options: string = '') => {
+    detectBlockIndices(model, 'update');
+    
     return `
     	<script type="text/javascript">
         ${options}

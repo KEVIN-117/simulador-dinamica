@@ -46,7 +46,7 @@ const mockedHtml = `
   Final Time <span data-var="finalTime" class="TKAdjustableNumber" data-min="2" data-max="300"> cookies</span>, you
   will consume <span data-var="calories"></span> calories.
 </p>
-<div id='negative' class='plotly' data-plotly='data'></div>
+<div id='negative' class='plotly' data-plotly='[data, data1]'></div>
 
 `;
 const MainBoard = () => {
