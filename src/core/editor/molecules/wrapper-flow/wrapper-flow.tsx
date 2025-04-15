@@ -23,7 +23,6 @@ const WrapperFlow: React.FC<WrapperFlowProps> = (props) => {
       baseCode = injectBeforeLoop(baseCode, plotlyJS[0]);
       baseCode = injectInsideLoopStart(baseCode, plotlyJS[1]);
       baseCode = injectAfterLoop(baseCode, plotlyJS[2]);
-      console.log('baseCode', baseCode);
       const iframeDocument = iframe.contentWindow?.document;
       if (iframeDocument) {
         iframeDocument.open();

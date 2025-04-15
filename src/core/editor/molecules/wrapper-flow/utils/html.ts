@@ -29,14 +29,6 @@ const getWrapperHead = (title: string, model: string, options: string) => {
     `;
 }
 
-const getPlotlyCodeBlock = (dynamicaPlotlyCode: string) => {
-    const js = `
-        <script type="text/javascript">
-            ${dynamicaPlotlyCode}
-        </script>
-    `;
-}
-
 const getWrapperTangle = (model: string, options: string = '') => {
     detectBlockIndices(model, 'update');
 

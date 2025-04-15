@@ -4,6 +4,7 @@ import styles from './main-board.module.scss';
 import Editor from '@monaco-editor/react';
 import WrapperFlow from '../../molecules/wrapper-flow/wrapper-flow';
 import Header from '../../atoms/top-bar/top-bar';
+import IframeViewer from '../../molecules/iframe-loader/iframeLoader';
 const mockedCode = `
 const model = {
   initialize: function () {
@@ -37,6 +38,7 @@ const mockedHtml = `
 const MainBoard = () => {
   const [code, setCode] = useState(mockedCode);
   const [play, setPlay] = useState(false);
+  const [isVisibleForrester, setVisibleForrester] = useState(false);
   const [htmlCode, setHtmlCode] = useState(mockedHtml);
   const draggableRef = useRef<HTMLHRElement>(null);
   const [leftPorcent, setPorcent] = useState(50);
@@ -77,9 +79,12 @@ const MainBoard = () => {
     console.log('is play ', isPlay);
     setPlay(isPlay);
   };
+  const handlerForrester  = (isVisible: boolean) => {
+    setVisibleForrester(isVisible);
+  } 
   return (
     <div>
-      <Header play={handlerPlay} />
+      <Header play={handlerPlay} visibleForrester={handlerForrester} />
       <div className={styles.container}>
         <Panel width={`${leftPorcent}%`}>
           <Editor
@@ -100,6 +105,7 @@ const MainBoard = () => {
         </Panel>
         <hr ref={draggableRef} className={styles.draggable} />
         <Panel width={`${100 - leftPorcent}%`}>
+          <IframeViewer src='/forrester' title='Iframe Example' isVisibleForrester={isVisibleForrester}/>
           {isMouseMove && <div className={styles.overlay}></div>}
           <WrapperFlow model={code} html={htmlCode} isPlay={play} />
         </Panel>
