@@ -5,7 +5,6 @@ import Editor from '@monaco-editor/react';
 import WrapperFlow from '../../molecules/wrapper-flow/wrapper-flow';
 import Header from '../../atoms/top-bar/top-bar';
 const mockedCode = `
-
 const model = {
   initialize: function () {
       this.x0 = 0;
@@ -14,39 +13,25 @@ const model = {
       this.k = 0.034;
       this.xd = 40;
       this.initTime = 0;
-      Plotly.newPlot(negative, [], {title: 'Negative', margin: {t: 30}})
   }, 
   update: function () {
       this.x = this.x0;
       this.time = this.initTime = 0;
-      const xData = [];
-      const timeData = [];
       for (this.time = this.initTime; this.time < this.finalTime; this.time += this.dt) {
           this.x += ((this.xd - this.x) * this.k ) * this.dt;
-          xData.push(this.x);
-          timeData.push(this.time);
       }
-      const data = [
-          {
-              x: timeData,
-              y: xData,
-              mode: 'lines',
-              type: 'scatter'
-          }
-      ]
-      console.log(data);
-      Plotly.react(negative, data, {title: "negative"});
   }
 }
 
 `;
 const mockedHtml = `
+
 <p>This is a simple reactive document.</p>
 <p id="example">
   Final Time <span data-var="finalTime" class="TKAdjustableNumber" data-min="2" data-max="300"> cookies</span>, you
   will consume <span data-var="calories"></span> calories.
 </p>
-<div id='negative' class='plotly' data-plotly='data'></div>
+<div id='negative' class='plotly'  data-plotly='[time, x]'></div>
 
 `;
 const MainBoard = () => {
