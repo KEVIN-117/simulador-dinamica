@@ -66,15 +66,27 @@ const renderInitPlotyData = (html: string) => {
     if (plotlyObjects) {
         plotlyObjects.forEach((plotlyObject: any) => {
             const { id, dataPlotly } = plotlyObject;
-            const [x, y] = getVarsGraph(dataPlotly);
-            code[0] += `const ${x}_${id}PlotData = []; \n`;
-            code[0] += `const ${y}_${id}PlotData = []; \n`;
-            code[1] += `${x}_${id}PlotData.push(this.${x}); \n`;
-            code[1] += `${y}_${id}PlotData.push(this.${y}); \n`;
-            code[2] += `const dataPlotly_${id} = [{x: ${x}_${id}PlotData, y: ${y}_${id}PlotData, mode: 'lines', type: 'scatter'}]; \n`;
-            code[2] += `Plotly.react('${id}', dataPlotly_${id}, {title: "A title"}); \n`;
-            //code[3] += `Plotly.newPlot('${id}', {}, {title: "A title"}); \n`;
-
+            const [x, y, z] = getVarsGraph(dataPlotly);
+            if (x === undefined || y === undefined) {
+                throw Error('Error in data-plotly attribute, plese use the format [key, value]');
+            }
+            if (z !== undefined) {
+                code[0] += `const ${x}_${id}PlotData = []; \n`;
+                code[0] += `const ${y}_${id}PlotData = []; \n`;
+                code[0] += `const ${z}_${id}PlotData = []; \n`;
+                code[1] += `${x}_${id}PlotData.push(this.${x}); \n`;
+                code[1] += `${y}_${id}PlotData.push(this.${y}); \n`;
+                code[1] += `${z}_${id}PlotData.push(this.${z}); \n`;
+                code[2] += `const dataPlotly_${id} = [{x: ${x}_${id}PlotData, y: ${y}_${id}PlotData, z: ${z}_${id}PlotData, mode: 'lines', type: 'scatter3d'}]; \n`;
+                code[2] += `Plotly.react('${id}', dataPlotly_${id}, {title: "A title"}); \n`;
+            } else {
+                code[0] += `const ${x}_${id}PlotData = []; \n`;
+                code[0] += `const ${y}_${id}PlotData = []; \n`;
+                code[1] += `${x}_${id}PlotData.push(this.${x}); \n`;
+                code[1] += `${y}_${id}PlotData.push(this.${y}); \n`;
+                code[2] += `const dataPlotly_${id} = [{x: ${x}_${id}PlotData, y: ${y}_${id}PlotData, mode: 'lines', type: 'scatter'}]; \n`;
+                code[2] += `Plotly.react('${id}', dataPlotly_${id}, {title: "A title"}); \n`;
+            }
         });
     }
     return code;
