@@ -54,7 +54,7 @@ const getVarsGraph = (dataPlotly: string) => {
             let cleanVars = d.trim();
             cleanVars = cleanVars.replace(/[\[\]']+/g, '');
             return cleanVars.split(',').map((d: string) => d.trim());
-        })[0];
+        });
     } else {
         throw Error('Error in data-plotly attribute, plese use the format [key, value]');
     }
@@ -62,31 +62,69 @@ const getVarsGraph = (dataPlotly: string) => {
 
 const renderInitPlotyData = (html: string) => {
     const plotlyObjects = getPlotlyCodeBlock(html);
+    const hashMap = new Map<string, boolean>();
     const code = ['', '', ''];
     if (plotlyObjects) {
         plotlyObjects.forEach((plotlyObject: any) => {
             const { id, dataPlotly } = plotlyObject;
-            const [x, y, z] = getVarsGraph(dataPlotly);
-            if (x === undefined || y === undefined) {
-                throw Error('Error in data-plotly attribute, plese use the format [key, value]');
+            const plotData = getVarsGraph(dataPlotly);
+            console.log(plotData);
+            code[2] = `const dataPlotly_${id} = []; \n`;
+            for (let i = 0; i < plotData.length; i++) {
+                const [x, y, z] = plotData[i];
+                if (x === undefined || y === undefined) {
+                    throw Error('Error in data-plotly attribute, plese use the format [key, value]');
+                }
+                if (z !== undefined) {
+                    if (!hashMap.has(`const ${x}_${id}PlotData = []; \n`)) {
+                        code[0] += `const ${x}_${id}PlotData = []; \n`;
+                        hashMap.set(`const ${x}_${id}PlotData = []; \n`, true);
+                    }
+                    if (!hashMap.has(`const ${y}_${id}PlotData = []; \n`)) {
+                        code[0] += `const ${y}_${id}PlotData = []; \n`;
+                        hashMap.set(`const ${y}_${id}PlotData = []; \n`, true);
+                    }
+                    if (!hashMap.has(`const ${z}_${id}PlotData = []; \n`)) {
+                        code[0] += `const ${z}_${id}PlotData = []; \n`;
+                        hashMap.set(`const ${z}_${id}PlotData = []; \n`, true);
+                    }
+                    if (!hashMap.has(`${x}_${id}PlotData.push(this.${x}); \n`)) {
+                        code[1] += `${x}_${id}PlotData.push(this.${x}); \n`;
+                        hashMap.set(`${x}_${id}PlotData.push(this.${x}); \n`, true);
+                    }
+                    if (!hashMap.has(`${y}_${id}PlotData.push(this.${y}); \n`)) {
+                        code[1] += `${y}_${id}PlotData.push(this.${y}); \n`;
+                        hashMap.set(`${y}_${id}PlotData.push(this.${y}); \n`, true);
+                    }
+                    if (!hashMap.has(`${z}_${id}PlotData.push(this.${z}); \n`)) {
+                        code[1] += `${z}_${id}PlotData.push(this.${z}); \n`;
+                        hashMap.set(`${z}_${id}PlotData.push(this.${z}); \n`, true);
+                    }
+                    code[2] += `dataPlotly_${id}.push({x: ${x}_${id}PlotData, y: ${y}_${id}PlotData, z: ${z}_${id}PlotData, mode: 'lines', type: 'scatter3d'}) \n`;
+                    code[2] += ``;
+                } else {
+                    if (!hashMap.has(`const ${x}_${id}PlotData = []; \n`)) {
+                        code[0] += `const ${x}_${id}PlotData = []; \n`;
+                        hashMap.set(`const ${x}_${id}PlotData = []; \n`, true);
+                    }
+                    if (!hashMap.has(`const ${y}_${id}PlotData = []; \n`)) {
+                        code[0] += `const ${y}_${id}PlotData = []; \n`;
+                        hashMap.set(`const ${y}_${id}PlotData = []; \n`, true);
+                    }
+                    if (!hashMap.has(`${x}_${id}PlotData.push(this.${x}); \n`)) {
+                        code[1] += `${x}_${id}PlotData.push(this.${x}); \n`;
+                        hashMap.set(`${x}_${id}PlotData.push(this.${x}); \n`, true);
+                    }
+                    if (!hashMap.has(`${y}_${id}PlotData.push(this.${y}); \n`)) {
+                        code[1] += `${y}_${id}PlotData.push(this.${y}); \n`;
+                        hashMap.set(`${y}_${id}PlotData.push(this.${y}); \n`, true);
+                    }
+                    code[2] += `dataPlotly_${id}.push({x: ${x}_${id}PlotData, y: ${y}_${id}PlotData, mode: 'lines', type: 'scatter'}); \n`;
+
+                }
             }
-            if (z !== undefined) {
-                code[0] += `const ${x}_${id}PlotData = []; \n`;
-                code[0] += `const ${y}_${id}PlotData = []; \n`;
-                code[0] += `const ${z}_${id}PlotData = []; \n`;
-                code[1] += `${x}_${id}PlotData.push(this.${x}); \n`;
-                code[1] += `${y}_${id}PlotData.push(this.${y}); \n`;
-                code[1] += `${z}_${id}PlotData.push(this.${z}); \n`;
-                code[2] += `const dataPlotly_${id} = [{x: ${x}_${id}PlotData, y: ${y}_${id}PlotData, z: ${z}_${id}PlotData, mode: 'lines', type: 'scatter3d'}]; \n`;
-                code[2] += `Plotly.react('${id}', dataPlotly_${id}, {title: "A title"}); \n`;
-            } else {
-                code[0] += `const ${x}_${id}PlotData = []; \n`;
-                code[0] += `const ${y}_${id}PlotData = []; \n`;
-                code[1] += `${x}_${id}PlotData.push(this.${x}); \n`;
-                code[1] += `${y}_${id}PlotData.push(this.${y}); \n`;
-                code[2] += `const dataPlotly_${id} = [{x: ${x}_${id}PlotData, y: ${y}_${id}PlotData, mode: 'lines', type: 'scatter'}]; \n`;
-                code[2] += `Plotly.react('${id}', dataPlotly_${id}, {title: "A title"}); \n`;
-            }
+
+            code[2] += `Plotly.react('${id}', dataPlotly_${id}, {}); \n`;
         });
     }
     return code;
