@@ -29,7 +29,7 @@ const mnodel = {
 const mockedHtml = `
 
 <p id="example">
-  Final Time <span data-var="finalTime" class="TKAdjustableNumber" data-min="2" data-max="300"> cookies</span>, you
+  Final Time <span data-var="finalTime" class="TKAdjustableNumber" data-min="2" data-max="300"></span>
 poblacion inicial <span data-var="x" class="TKAdjustableNumber" data-min="0" data-ma="100", data-step="1"></span>
 
 </p>
