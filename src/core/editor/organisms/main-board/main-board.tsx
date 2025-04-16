@@ -6,43 +6,31 @@ import WrapperFlow from '../../molecules/wrapper-flow/wrapper-flow';
 import Header from '../../atoms/top-bar/top-bar';
 import IframeViewer from '../../molecules/iframe-loader/iframeLoader';
 const mockedCode = `
-const model = {
+const mnodel = {
   initialize: function () {
-      this.x0 = 5;
-      this.y0 = 10;
-      this.finalTime = 100;
-      this.dt = 0.0625;
-      this.k1 = 0.34;
-      this.k2 = 0.32
-      this.k3 = 0.2;
-      this.k4  = 0.43;
-      this.initTime = 0;
-  }, 
+    this.x0 = 0;    
+    this.a = 0.1;     
+    this.xd = 500;     
+    this.b = 0.05;    
+    this.dt = 0.1;
+    this.initTime = 0;
+    this.finalTime = 100;
+  },
   update: function () {
-      this.x = this.x0;
-      this.y = this.y0;
-      this.time = this.initTime = 0;
-      for (this.time = this.initTime; this.time < this.finalTime; this.time += this.dt) {
-          this.f1 = this.x * this.k1 * this.y;
-          this.f2 = this.x * this.k2;
-          this.f3  = this.y * this.k3;
-          this.f4 = this.y * this.k4 * this.x;
-          this.x = this.x + (this.f1 - this.f2) * this.dt;
-          this.y = this.y + (this.f3 - this.f4) * this.dt; 
-          
-      }
+    this.x = this.x0;
+    for (this.time = this.initTime; this.time < this.finalTime; this.time += this.dt) {
+      
+    }
   }
-}
+};
 
 
 `;
 const mockedHtml = `
 
-<p>This is a simple reactive document.</p>
 <p id="example">
   Final Time <span data-var="finalTime" class="TKAdjustableNumber" data-min="2" data-max="300"> cookies</span>, you
-  poblacion inicial <span data-var="x0" class="TKAdjustableNumber" data-min="0" data-ma="100", data-step="1"></span>
-poblacion inicial <span data-var="y0" class="TKAdjustableNumber" data-min="0" data-ma="100", data-step="1"></span>
+poblacion inicial <span data-var="x" class="TKAdjustableNumber" data-min="0" data-ma="100", data-step="1"></span>
 
 </p>
 <div id='negative' class='plotly'  data-plotly='[time, x]'></div>
