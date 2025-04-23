@@ -1,0 +1,23 @@
+const mnodel = {
+  initialize: function () {
+    this.R0 = 100;    // Valor inicial del recurso o población
+    this.a = 0.1;     // Tasa de crecimiento
+    this.K = 500;     // Capacidad de carga
+    this.b = 0.05;    // Tasa de colapso
+    this.dt = 0.1;
+    this.initTime = 0;
+    this.finalTime = 100;
+  },
+  update: function () {
+    this.R = this.R0;
+    this.time = this.initTime;
+
+    this.results = [];
+
+    for (this.time = this.initTime; this.time < this.finalTime; this.time += this.dt) {
+      const dR = this.a * this.R * (1 - this.R / this.K) - this.b * this.R;
+      this.R += dR * this.dt;
+      this.results.push({ time: this.time, resource: this.R });
+    }
+  }
+};

@@ -1,0 +1,28 @@
+const model = {
+  initialize: function () {
+    this.x0 = 1;
+    this.y0 = 1;
+    this.z0 = 1;
+    this.sigma = 10;
+    this.rho = 28;
+    this.beta = 8 / 3;
+    this.dt = 0.01;
+    this.finalTime = 40;
+    this.initTime = 0;
+  },
+  update: function () {
+    this.x = this.x0;
+    this.y = this.y0;
+    this.z = this.z0;
+    this.time = this.initTime;
+    for (this.time = this.initTime; this.time < this.finalTime; this.time += this.dt) {
+      const dx = this.sigma * (this.y - this.x);
+      const dy = this.x * (this.rho - this.z) - this.y;
+      const dz = this.x * this.y - this.beta * this.z;
+
+      this.x = this.x + dx * this.dt;
+      this.y = this.y + dy * this.dt;
+      this.z = this.z + dz * this.dt;
+    }
+  }
+};
